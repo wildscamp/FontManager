@@ -183,15 +183,7 @@ namespace TheWilds
                     return false;
                 }
 
-                logger.Debug("Retrieving font name from '{0}'", fontDestination);
-
-                // Retrieves font name
-                // Makes sure you reference System.Drawing.Text
-                PrivateFontCollection fontCol = new PrivateFontCollection();
-                fontCol.AddFontFile(fontDestination);
-                var actualFontName = fontCol.Families[0].Name;
-
-                logger.Debug("Retrieved font name is '{0}'", actualFontName);
+                string actualFontName = GetFontName(fontDestination);
 
                 logger.Debug(@"Setting 'HKLM\{0} [{1}]' = '{2}'.", FONT_REG_PATH, actualFontName, FontName);
 
@@ -214,6 +206,43 @@ namespace TheWilds
             }
 
             return installed;
+        }
+
+        private static string GetFontName(string fontDestination)
+        {
+            logger.Debug("Attempting to retrieve font name from '{0}'", fontDestination);
+
+            // Retrieves font name
+            PrivateFontCollection fontCol = new PrivateFontCollection();
+            fontCol.AddFontFile(fontDestination);
+
+            var actualFontName = Path.GetFileName(fontDestination);
+
+            if (fontCol.Families.Count() > 0)
+            {
+                actualFontName = fontCol.Families[0].Name;
+
+                string extension = Path.GetExtension(fontDestination);
+                
+                switch (extension.ToLower())
+                {
+                    case ".ttf":
+                    case ".ttc":
+                        logger.Debug("Font type is TrueType. Appending '(TrueType)' to the end of the name.");
+
+                        actualFontName = String.Format("{0} (TrueType)", actualFontName);
+                        break;
+                    default:
+                        break;
+                }
+            } else
+            {
+                logger.Debug("Unable to retrive the font name from '{0}'. Using the file name instead.", fontDestination);
+            }
+
+            logger.Debug("Retrieved font name is '{0}'", actualFontName);
+
+            return actualFontName;
         }
 
         /// <summary>

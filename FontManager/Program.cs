@@ -78,7 +78,7 @@ namespace TheWilds
             ConfigureLogger();
             var options = new CmdOptions();
 
-            if (CommandLine.Parser.Default.ParseArgumentsStrict(args, options))
+            if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
                 if (options.Quiet)
                 {
@@ -95,7 +95,21 @@ namespace TheWilds
                 IEnumerable<string> installFiles = options.InstallFiles.Concat(options.ImplicitInstallFiles);
                 foreach (string file in installFiles)
                 {
-                    string FullPath = Path.GetFullPath(file);
+                    string FullPath = "";
+
+                    // The path string may not represent a wellformed path.
+                    try
+                    {
+                        FullPath = Path.GetFullPath(file);
+                    }
+                    catch (Exception)
+                    {
+                        logger.Warn("'{0}' is an malformed path. Unable to install.", file);
+
+                        continue;
+                    }
+
+                    logger.Debug("Full path of file to install: '{0}'", FullPath);
 
                     if (!File.Exists(FullPath))
                     {
@@ -113,7 +127,7 @@ namespace TheWilds
                 {
                     if (UninstallFont(file))
                     {
-                        logger.Info("Uninstalled '{0}'", file);
+                        logger.Info("Uninstalled '{0}'", Path.GetFileName(file));
                     }
                 }
             }

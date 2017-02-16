@@ -311,7 +311,7 @@ namespace TheWilds
                     }
                 }
 
-                logger.Debug("Using user32.dll::SendMessage() to notify other apps that a font change has happend.");
+                logger.Debug("Using user32.dll::SendMessage() to notify other apps that a font change has happened.");
 
                 SendMessage(new IntPtr(HWND_BROADCAST), WM_FONTCHANGE, IntPtr.Zero, IntPtr.Zero);
 

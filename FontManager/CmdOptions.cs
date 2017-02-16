@@ -7,7 +7,7 @@ using CommandLine;
 using CommandLine.Text;
 using System.Reflection;
 
-namespace TheWilds
+namespace Wilds.Apps.FontMgr
 {
     class CmdOptions
     {

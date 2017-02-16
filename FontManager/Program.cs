@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace TheWilds
+namespace Wilds.Apps.FontMgr
 {
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace TheWilds
     /// The main ideas from this code were borrowed from KYRIACOSS at http://pastebin.com/C99TmXBn.
     /// This code pasting was referenced on StackOverflow at http://stackoverflow.com/a/29334492/277798.
     /// </summary>
-    class FontManager
+    class Program
     {
         /// <summary>
         /// The path in HKLM where the fonts are registered.
